@@ -1,0 +1,32 @@
+# Entorno virtual
+.venv/
+venv/
+env/
+
+# Caché de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Caché de pytest
+.pytest_cache/
+
+# Configuración de PyCharm
+.idea/
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Variables de entorno (secretos)
+.env
+*.env
+
+# Archivos de cobertura
+.coverage
+htmlcov/
+
+# Distribuciones / empaquetado
+build/
+dist/
+*.egg-info/
