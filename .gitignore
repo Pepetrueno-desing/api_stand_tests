@@ -30,3 +30,10 @@ htmlcov/
 build/
 dist/
 *.egg-info/
+# Claves SSH (nunca subir)
+*.pub
+id_*
+*.pem
+*.key
+M4ri4m4ri4
+M4ri4m4ri4.pub
