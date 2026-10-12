@@ -1,5 +1,9 @@
 # API Stand Tests — Urban Grocers
 
+[![API Tests](https://github.com/Pepetrueno-desing/api_stand_tests/actions/workflows/tests.yml/badge.svg)](https://github.com/Pepetrueno-desing/api_stand_tests/actions/workflows/tests.yml)
+
+> ℹ️ El badge muestra el estado del workflow de CI. Los 4 fallos de tests corresponden a **bugs reales de la API**, documentados más abajo.
+
 Proyecto de automatización de pruebas para la API de Urban Grocers.
 
 ---
@@ -12,7 +16,7 @@ Suite de pruebas automatizadas con **pytest** para validar los endpoints de la A
 - **Búsqueda de kits por productos** (`POST /api/v1/products/kits/`)
 - **Consulta de logs** (`GET /api/logs/main/`)
 
-La suite incluye **10 tests** que validan el campo `firstName` de la creación de usuarios: longitudes mínimas y máximas, caracteres especiales, números, espacios, campos faltantes y tipos incorrectos.
+La suite incluye **10 tests** que validan el campo `firstName` de la creación de usuarios.
 
 **Resultado actual:** `9 passed, 1 failed` — el fallo corresponde a un **bug real de la API** documentado más abajo.
 
@@ -30,42 +34,23 @@ La suite incluye **10 tests** que validan el campo `firstName` de la creación d
 
 ## 🚀 Instalación
 
+Clona el repositorio y prepara el entorno:
+
 ```bash
-# Clonar el repositorio
 git clone git@github.com:Pepetrueno-desing/api_stand_tests.git
 cd api_stand_tests
-
-# Crear y activar entorno virtual
 python -m venv .venv
-source .venv/bin/activate        # Linux/macOS
-# .venv\Scripts\activate         # Windows
-
-# Instalar dependencias
+source .venv/bin/activate
 pip install -r requirements.txt
-📁 Estructura del proyecto
-text
-api_stand_tests/
-├── .gitignore
-├── README.md
-├── requirements.txt
-├── configuration.py
-├── data.py
-├── sender_stand_request.py
-└── test_create_user.py
-Archivo	Propósito
-configuration.py	URLs y rutas (URL_SERVICE, CREATE_USER_PATH, PRODUCTS_KITS_PATH, LOG_MAIN_PATH, USERS_TABLE_PATH)
-data.py	Datos de prueba (headers, user_body, product_ids)
-sender_stand_request.py	Funciones de interacción con la API (post_new_user, post_products_kits)
-test_create_user.py	Suite de 10 tests automatizados
-requirements.txt	Dependencias del proyecto
+
+
 ▶️ Ejecución
+Ejecuta la suite completa:
+
 bash
 pytest test_create_user.py -v
-Resultado esperado:
+Resultado esperado: 10 collected, 9 passed, 1 failed
 
-text
-10 collected
-9 passed, 1 failed
 ⚠️ El fallo no es un error del proyecto, sino un bug de la API detectado por los tests.
 
 🧪 Cobertura de pruebas
@@ -84,37 +69,28 @@ text
 🐞 La API acepta espacios en firstName
 Campo	Detalle
 Test	test_create_user_has_space_in_first_name_get_error_response
-Esperado	400 Bad Request (los espacios no son válidos en firstName)
-Obtenido	201 Created (la API creó el usuario)
-Impacto	Se pueden crear usuarios con nombres que contienen espacios, violando la regla de negocio
+Esperado	400 Bad Request
+Obtenido	201 Created
+Impacto	Se pueden crear usuarios con nombres que contienen espacios
 Reportado	S3-64 en Jira
 Severidad	Media
-Este bug fue documentado y reportado como parte del flujo de trabajo de QA, demostrando la capacidad de identificar discrepancias entre la especificación y el comportamiento real de la API.
-
 🔍 Endpoints explorados
 Endpoint	Método	Uso
 /api/v1/users/	POST	Crear usuario (cubierto por los tests)
-/api/v1/products/kits/	POST	Buscar kits por productos (explorado manualmente)
-/api/logs/main/	GET	Consultar logs del servidor (explorado manualmente)
-/api/db/resources/user_model.csv	GET	Obtener tabla de usuarios (explorado manualmente)
+/api/v1/products/kits/	POST	Buscar kits por productos (manual)
+/api/logs/main/	GET	Consultar logs del servidor (manual)
 📚 Aprendizajes
 Automatización de API con pytest + requests.
 
 Estructura de proyectos QA: separación de configuration.py, data.py, sender_stand_request.py y test_*.py.
 
-Funciones auxiliares para construcción de datos: get_user_body, negative_assert_symbol, negative_assert_no_firstname.
-
 Validación de respuestas: status_code, response.json() y campos específicos.
 
-Manejo de tokens: obtención del authToken desde la respuesta de creación de usuario y uso en headers Authorization: Bearer {authToken}.
+Manejo de tokens: authToken en headers Authorization: Bearer {authToken}.
 
 Casos positivos y negativos: tests que esperan 201 y tests que esperan 400.
 
 Detección de bugs: identificar cuándo la API no cumple la especificación.
-
-Uso de .copy() para no modificar diccionarios originales en pruebas.
-
-Validación de mensajes de error exactos con assert.
 
 👤 Autor
 Juan Mendoza (Juancho) — QA Automation Engineer en formación
